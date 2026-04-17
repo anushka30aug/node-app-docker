@@ -2,7 +2,7 @@ const http = require('http');
 const port = 3000;
 
 const server = http.createServer((req, res) => {
-  res.end("Hello from Kubernetes!");
+  res.end("Hello from Kubernetes! This is a Node.js application running in a container.");
 });
 
 server.listen(port, '0.0.0.0');
