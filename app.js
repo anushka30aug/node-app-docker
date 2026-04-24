@@ -4,7 +4,7 @@ const port = 3000;
 
 app.get('/', (req, res) => {
   res.sendStatus(500);
-  res.send("Hello from Kubernetes! This is the app.js file. and its my test msg 0014....");
+  res.send("Hello from Kubernetes! This is the app.js file. and its my test msg 0015....");
 });
 
 app.get('/health', (req, res) => {
