@@ -3,7 +3,8 @@ const app = express();
 const port = 3000;
 
 app.get('/', (req, res) => {
-  res.send("Hello from Kubernetes! This is the app.js file. and its my test msg 0016....");
+  res.sendStatus(500);
+  res.send("Hello from Kubernetes! This is the app.js file. and its my test msg 0017....");
 });
 
 app.get('/health', (req, res) => {
