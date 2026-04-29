@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
     - name: Checkout Code
       uses: actions/checkout@v4
 
@@ -19,25 +20,51 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build Docker Image
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/node-app:${{ github.sha }} .
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/node-app:${{ github.sha }} .
 
     - name: Push Docker Image
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/node-app:${{ github.sha }}
-
-
-
-
-
-
-    - name: Update K8s Manifest Repo
       run: |
-        git clone https://github.com/anushka30aug/k8s-gitops.git
+        docker push ${{ secrets.DOCKER_USERNAME }}/node-app:${{ github.sha }}
+
+    ########################################################
+    # UPDATE FIRST MANIFEST REPO
+    ########################################################
+
+    - name: Update First Manifest Repo
+      run: |
+
+        git clone https://${{ secrets.GH_TOKEN }}@github.com/anushka30aug/k8s-gitops.git
+
         cd k8s-gitops
 
         sed -i "s|image: .*|image: anushkashukla003/node-app:${{ github.sha }}|" Rollout.yaml
+
         git config user.name "github-actions"
         git config user.email "actions@github.com"
 
         git add .
-        git commit -m "Update image to ${{ github.sha }}"
-        git push https://${{ secrets.GH_TOKEN }}@github.com/anushka30aug/k8s-gitops.git
+        git commit -m "Update image to ${{ github.sha }}" || echo "No changes to commit"
+
+        git push
+
+    ########################################################
+    # UPDATE SECOND MANIFEST REPO
+    ########################################################
+
+    - name: Update Second Manifest Repo
+      run: |
+
+        git clone https://${{ secrets.GH_TOKEN }}@github.com/anushka30aug/argo-rollout-blue-green-manifest.git
+
+        cd argo-rollout-blue-green-manifest
+
+        sed -i "s|image: .*|image: anushkashukla003/node-app:${{ github.sha }}|" rollout.yaml
+
+        git config user.name "github-actions"
+        git config user.email "actions@github.com"
+
+        git add .
+        git commit -m "Update image to ${{ github.sha }}" || echo "No changes to commit"
+
+        git push
