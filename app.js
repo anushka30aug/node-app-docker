@@ -6,8 +6,9 @@ const app = express();
 const metricsMiddleware = promBundle({
   includeMethod: true,
   includePath: true,
+
   promClient: {
-    collectDefaultMetrics: true
+    collectDefaultMetrics: {}
   }
 });
 
@@ -16,7 +17,7 @@ app.use(metricsMiddleware);
 const port = 3000;
 
 app.get('/', (req, res) => {
-  res.send("Hello from Kubernetes! 030");
+  res.send("Hello from Kubernetes!");
 });
 
 app.get('/health', (req, res) => {
