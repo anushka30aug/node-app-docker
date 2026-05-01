@@ -17,7 +17,7 @@ app.use(metricsMiddleware);
 const port = 3000;
 
 app.get('/', (req, res) => {
-  res.send("Hello from Kubernetes!31");
+  res.send("Hello from Kubernetes!32");
 });
 
 app.get('/health', (req, res) => {
