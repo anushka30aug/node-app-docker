@@ -6,7 +6,7 @@ const app = express();
 const metricsMiddleware = promBundle({
   includeMethod: true,
   includePath: true,
-
+  includeStatusCode: true,
   promClient: {
     collectDefaultMetrics: {}
   }
