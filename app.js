@@ -4,10 +4,8 @@ const client = require('prom-client');
 const app = express();
 const register = new client.Registry();
 
-// Collect default Node.js metrics
 client.collectDefaultMetrics({ register });
 
-// Define your own counter with the exact labels Prometheus expects
 const httpRequestsTotal = new client.Counter({
   name: 'http_requests_total',
   help: 'Total HTTP requests',
@@ -15,7 +13,6 @@ const httpRequestsTotal = new client.Counter({
   registers: [register],
 });
 
-// Middleware to count every request
 app.use((req, res, next) => {
   res.on('finish', () => {
     httpRequestsTotal.inc({
@@ -37,7 +34,6 @@ app.get('/health', (req, res) => {
   res.sendStatus(200);
 });
 
-// Expose metrics endpoint
 app.get('/metrics', async (req, res) => {
   res.set('Content-Type', register.contentType);
   res.end(await register.metrics());
