@@ -27,11 +27,11 @@ app.use((req, res, next) => {
 const port = 3000;
 
 app.get('/', (req, res) => {
-  res.send("Hello from Kubernetes! 37.");
+  res.send("Hello from Kubernetes! 38.");
 });
 
 app.get('/health', (req, res) => {
-  res.sendStatus(202);
+  res.sendStatus(404);
 });
 
 app.get('/metrics', async (req, res) => {
